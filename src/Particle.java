@@ -71,4 +71,14 @@ public class Particle {
             this.moveInto(neighbourParticle);
         }
     }
+
+    public void action(Map<Direction, Particle> neighbours) {
+        if (this.flavor.equals(ParticleFlavor.EMPTY)) {
+            return;
+        }
+
+        if (!this.flavor.equals(ParticleFlavor.BARRIER)) {
+            fall(neighbours);
+        }
+    }
 }
