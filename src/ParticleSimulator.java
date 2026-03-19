@@ -42,6 +42,16 @@ public class ParticleSimulator {
         }
     }
 
+    public boolean validIndex(int x, int y) {
+        if ((x <= (this.width - 1)) && (x >= 0)) {
+            if ((y <= (this.height - 1)) && (y >= 0)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
 
         ParticleSimulator particleSimulator = new ParticleSimulator(150, 150);

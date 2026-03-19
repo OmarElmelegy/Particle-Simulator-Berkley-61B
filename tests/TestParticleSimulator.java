@@ -33,4 +33,25 @@ public class TestParticleSimulator {
             }
         }
     }
+
+        @Test
+    public void testValidIndex() {
+        // Arrange: Create a grid of 10x20
+        int width = 10;
+        int height = 20;
+        ParticleSimulator sim = new ParticleSimulator(width, height);
+
+        // Assert: Valid Indices (Inside bounds)
+        assertThat(sim.validIndex(0, 0)).isTrue();             // Bottom-Left Corner
+        assertThat(sim.validIndex(9, 19)).isTrue();            // Top-Right Corner (width-1, height-1)
+        assertThat(sim.validIndex(5, 10)).isTrue();            // Middle
+
+        // Assert: Invalid Indices (Outside bounds)
+        assertThat(sim.validIndex(-1, 0)).isFalse();           // Negative X
+        assertThat(sim.validIndex(0, -1)).isFalse();           // Negative Y
+        assertThat(sim.validIndex(10, 0)).isFalse();           // X == Width (Off by one)
+        assertThat(sim.validIndex(0, 20)).isFalse();           // Y == Height (Off by one)
+        assertThat(sim.validIndex(100, 100)).isFalse();        // Far out of bounds
+    }
+
 }
