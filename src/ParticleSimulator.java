@@ -75,7 +75,9 @@ public class ParticleSimulator {
                 int x = (int) StdDraw.mouseX();
                 int y = (int) StdDraw.mouseY();
 
-                particleSimulator.particles[x][y] = new Particle(nextParticleFlavor);
+                if (particleSimulator.validIndex(x, y)) {
+                    particleSimulator.particles[x][y] = new Particle(nextParticleFlavor);
+                }
             }
 
             particleSimulator.drawParticles();
