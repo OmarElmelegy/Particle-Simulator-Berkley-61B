@@ -98,4 +98,31 @@ public class TestParticleSimulator {
                 .that(cornerNeighbors.get(Direction.LEFT).flavor).isEqualTo(ParticleFlavor.BARRIER);
     }
 
+    @Test
+    public void testTick_updatesParticlesBottomUp() {
+        // Arrange: Create a tall, narrow grid (1 wide, 3 high)
+        // Coordinates: (0,0) is bottom, (0,2) is top
+        ParticleSimulator sim = new ParticleSimulator(1, 3);
+
+        // Setup a stack of sand with a gap at the bottom
+        sim.particles[0][0] = new Particle(ParticleFlavor.EMPTY); // Bottom
+        sim.particles[0][1] = new Particle(ParticleFlavor.SAND);  // Middle
+        sim.particles[0][2] = new Particle(ParticleFlavor.SAND);  // Top
+
+        // Act: Run one simulation step
+        sim.tick();
+
+        // Assert: Both particles should have moved down one step
+        
+        // 1. The bottom spot (0,0) catches the first falling sand
+        assertThat(sim.particles[0][0].flavor).isEqualTo(ParticleFlavor.SAND);
+
+        // 2. The middle spot (0,1) catches the second falling sand
+        // (If the loop ran top-down, this would be EMPTY because the top sand would have been blocked)
+        assertThat(sim.particles[0][1].flavor).isEqualTo(ParticleFlavor.SAND);
+
+        // 3. The top spot (0,2) should now be empty
+        assertThat(sim.particles[0][2].flavor).isEqualTo(ParticleFlavor.EMPTY);
+    }
+
 }

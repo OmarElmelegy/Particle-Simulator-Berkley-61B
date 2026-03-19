@@ -64,6 +64,15 @@ public class ParticleSimulator {
         return neighboursMap;
     }
 
+    public void tick() {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Map<Direction, Particle> neighbours = getNeighbors(x, y);
+                particles[x][y].fall(neighbours);
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
         ParticleSimulator particleSimulator = new ParticleSimulator(150, 150);
