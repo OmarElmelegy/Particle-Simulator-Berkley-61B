@@ -1,7 +1,5 @@
 import java.util.Map;
 
-import javax.servlet.http.Part;
-
 import edu.princeton.cs.algs4.StdDraw;
 
 public class ParticleSimulator {

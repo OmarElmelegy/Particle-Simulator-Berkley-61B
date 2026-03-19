@@ -64,4 +64,11 @@ public class Particle {
         this.lifespan = -1;
     }
 
+    public void fall(Map<Direction, Particle> neighbours){
+        Particle neighbourParticle = neighbours.get(Direction.DOWN);
+        
+        if (neighbourParticle != null && neighbourParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+            this.moveInto(neighbourParticle);
+        }
+    }
 }
