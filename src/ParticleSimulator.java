@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 
 import edu.princeton.cs.algs4.StdDraw;
@@ -72,6 +73,29 @@ public class ParticleSimulator {
             }
         }
     }
+
+        @Override
+    public String toString() {
+        // 1. Build a reverse map to look up characters by Flavor
+        Map<ParticleFlavor, Character> flavorToChar = new HashMap<>();
+        for (Map.Entry<Character, ParticleFlavor> entry : LETTER_TO_PARTICLE.entrySet()) {
+            flavorToChar.put(entry.getValue(), entry.getKey());
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        // Have to iterate from the top so that
+        // the top particles are shown first.
+        for (int y = height - 1; y >= 0; y -= 1) {
+            for (int x = 0; x < width; x += 1) {
+                Particle p = particles[x][y];
+                sb.append(flavorToChar.get(p.flavor));
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 
     public static void main(String[] args) {
 

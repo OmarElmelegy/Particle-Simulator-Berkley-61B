@@ -125,4 +125,66 @@ public class TestParticleSimulator {
         assertThat(sim.particles[0][2].flavor).isEqualTo(ParticleFlavor.EMPTY);
     }
 
+        private ParticleSimulator fromBoardString(String board) {
+        String[] lines = board.trim().split("\\n");
+        int height = lines.length;
+        int width = lines[0].trim().length();
+
+        ParticleSimulator sim = new ParticleSimulator(width, height);
+
+        for (int i = 0; i < height; i++) {
+            String line = lines[i].trim();
+            for (int x = 0; x < width; x++) {
+                char c = line.charAt(x);
+                int y = height - 1 - i;
+                ParticleFlavor flavor = ParticleSimulator.LETTER_TO_PARTICLE.get(c);
+                sim.particles[x][y] = new Particle(flavor);
+            }
+        }
+        return sim;
+    }
+
+    @Test
+    public void testTickVisual() {
+        // Arrange: A 3x5 grid with sand (s) suspended over empty space (d)
+        // and a barrier (b) at the bottom.
+        String initialBoard = """
+            s.s
+            s.s
+            ...
+            ...
+            bbb
+            """;
+
+        ParticleSimulator sim = fromBoardString(initialBoard);
+
+        // Act: Run 1 tick
+        sim.tick();
+
+        String expectedAfter1Tick = """
+            ...
+            s.s
+            s.s
+            ...
+            bbb
+            """;
+
+        // Assert: Verify state after 1 tick
+        assertThat(sim.toString().trim()).isEqualTo(expectedAfter1Tick.trim());
+
+        // Act: Run 2nd tick
+        sim.tick();
+
+        String expectedAfter2Ticks = """
+            ...
+            ...
+            s.s
+            s.s
+            bbb
+            """;
+
+        // Assert: Verify state after 2 ticks
+        assertThat(sim.toString().trim()).isEqualTo(expectedAfter2Ticks.trim());
+    }
+
 }
