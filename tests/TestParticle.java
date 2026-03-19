@@ -49,6 +49,4 @@ public class TestParticle {
         assertThat(particle_b.flavor).isEqualTo(ParticleFlavor.FIRE);
         assertThat(particle_b.lifespan).isEqualTo(10);
     }
-
-
 }
