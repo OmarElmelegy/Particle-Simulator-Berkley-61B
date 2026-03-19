@@ -1,5 +1,7 @@
 import java.util.Map;
 
+import javax.servlet.http.Part;
+
 import edu.princeton.cs.algs4.StdDraw;
 
 public class ParticleSimulator {
@@ -50,6 +52,18 @@ public class ParticleSimulator {
         }
 
         return false;
+    }
+
+    public Map<Direction, Particle> getNeighbors(int x, int y) {
+        java.util.Map<Direction, Particle> neighboursMap = new java.util.HashMap<>();
+
+        // Helper method to safely get a particle or return a BARRIER if out of bounds
+        neighboursMap.put(Direction.UP, validIndex(x, y + 1) ? particles[x][y + 1] : new Particle(ParticleFlavor.BARRIER));
+        neighboursMap.put(Direction.DOWN, validIndex(x, y - 1) ? particles[x][y - 1] : new Particle(ParticleFlavor.BARRIER));
+        neighboursMap.put(Direction.RIGHT, validIndex(x + 1, y) ? particles[x + 1][y] : new Particle(ParticleFlavor.BARRIER));
+        neighboursMap.put(Direction.LEFT, validIndex(x - 1, y) ? particles[x - 1][y] : new Particle(ParticleFlavor.BARRIER));
+
+        return neighboursMap;
     }
 
     public static void main(String[] args) {
