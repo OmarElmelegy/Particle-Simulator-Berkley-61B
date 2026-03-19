@@ -125,6 +125,7 @@ public class ParticleSimulator {
                 }
             }
 
+            particleSimulator.tick();
             particleSimulator.drawParticles();
             StdDraw.show();
             StdDraw.pause(5);
