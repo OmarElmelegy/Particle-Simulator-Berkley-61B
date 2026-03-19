@@ -35,4 +35,20 @@ public class TestParticle {
         assertThat(flowerParticle.color()).isEqualTo(new Color(255, 141, 161));
     }
 
+        @Test
+    public void testMoveInto() {
+        Particle particle_a = new Particle(ParticleFlavor.FIRE);
+        particle_a.lifespan = 10;
+        Particle particle_b = new Particle(ParticleFlavor.EMPTY);
+        particle_b.lifespan = -1;
+
+        particle_a.moveInto(particle_b);
+        assertThat(particle_a.flavor).isEqualTo(ParticleFlavor.EMPTY);
+        assertThat(particle_a.lifespan).isEqualTo(-1);
+
+        assertThat(particle_b.flavor).isEqualTo(ParticleFlavor.FIRE);
+        assertThat(particle_b.lifespan).isEqualTo(10);
+    }
+
+
 }

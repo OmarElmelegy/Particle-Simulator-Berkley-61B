@@ -40,7 +40,7 @@ public class Particle {
         }
 
         else if (flavor == ParticleFlavor.PLANT) {
-            return new Color(0,255,0);
+            return new Color(0, 255, 0);
         }
 
         else if (flavor == ParticleFlavor.FIRE) {
@@ -51,7 +51,17 @@ public class Particle {
             return new Color(255, 141, 161);
         }
 
-        else return null;
+        else
+            return null;
+    }
+
+    void moveInto(Particle other) {
+
+        other.flavor = this.flavor;
+        other.lifespan = this.lifespan;
+
+        this.flavor = ParticleFlavor.EMPTY;
+        this.lifespan = -1;
     }
 
 }
