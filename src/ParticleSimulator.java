@@ -1,3 +1,5 @@
+import java.util.Map;
+
 import edu.princeton.cs.algs4.StdDraw;
 
 public class ParticleSimulator {
@@ -5,6 +7,16 @@ public class ParticleSimulator {
     public int width;
     public int height;
     public Particle[][] particles;
+
+    public static final Map<Character, ParticleFlavor> LETTER_TO_PARTICLE = Map.of(
+            's', ParticleFlavor.SAND,
+            'b', ParticleFlavor.BARRIER,
+            'w', ParticleFlavor.WATER,
+            'p', ParticleFlavor.PLANT,
+            'f', ParticleFlavor.FIRE,
+            '.', ParticleFlavor.EMPTY,
+            'n', ParticleFlavor.FOUNTAIN,
+            'r', ParticleFlavor.FLOWER);
 
     public ParticleSimulator(int width, int height) {
 
@@ -43,6 +55,12 @@ public class ParticleSimulator {
         ParticleFlavor nextParticleFlavor = ParticleFlavor.SAND;
 
         while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                Character keyInput = StdDraw.nextKeyTyped();
+
+                nextParticleFlavor = LETTER_TO_PARTICLE.getOrDefault(keyInput, nextParticleFlavor);
+            }
+
             if (StdDraw.isMousePressed()) {
                 int x = (int) StdDraw.mouseX();
                 int y = (int) StdDraw.mouseY();
