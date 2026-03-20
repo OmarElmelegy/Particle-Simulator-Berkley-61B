@@ -43,15 +43,23 @@ public class Particle {
         }
 
         else if (flavor == ParticleFlavor.PLANT) {
-            return new Color(0, 255, 0);
+            double ratio = (double) Math.max(0, Math.min(lifespan, PLANT_LIFESPAN)) / PLANT_LIFESPAN;
+            int g = 120 + (int) Math.round((255 - 120) * ratio);
+            return new Color(0, g, 0);
         }
 
         else if (flavor == ParticleFlavor.FIRE) {
-            return new Color(255, 0, 0);
+            double ratio = (double) Math.max(0, Math.min(lifespan, FIRE_LIFESPAN)) / FIRE_LIFESPAN;
+            int r = (int) Math.round(255 * ratio);
+            return new Color(r, 0, 0);
         }
 
         else if (flavor == ParticleFlavor.FLOWER) {
-            return new Color(255, 141, 161);
+            double ratio = (double) Math.max(0, Math.min(lifespan, FLOWER_LIFESPAN)) / FLOWER_LIFESPAN;
+            int r = 120 + (int) Math.round((255 - 120) * ratio);
+            int g = 70 + (int) Math.round((141 - 70) * ratio);
+            int b = 80 + (int) Math.round((161 - 80) * ratio);
+            return new Color(r, g, b);
         }
 
         else
@@ -150,6 +158,18 @@ public class Particle {
 
         if (this.flavor.equals(ParticleFlavor.PLANT) || this.flavor.equals(ParticleFlavor.FLOWER)) {
             grow(neighbours);
+        }
+    }
+
+    public void decrementLifespan() {
+        
+        if (this.lifespan > 0) {
+            this.lifespan -= 1;
+        }
+
+        if (this.lifespan == 0) {
+            this.flavor = ParticleFlavor.EMPTY;
+            this.lifespan = -1;
         }
     }
 }

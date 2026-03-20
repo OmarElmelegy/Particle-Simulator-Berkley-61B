@@ -70,6 +70,7 @@ public class ParticleSimulator {
             for (int x = 0; x < width; x++) {
                 Map<Direction, Particle> neighbours = getNeighbors(x, y);
                 particles[x][y].action(neighbours);
+                particles[x][y].decrementLifespan();
             }
         }
     }
