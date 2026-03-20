@@ -67,6 +67,13 @@ public class Particle {
         this.lifespan = -1;
     }
 
+    void growInto(Particle other) {
+
+        other.flavor = this.flavor;
+        other.lifespan = this.lifespan;
+        
+    }
+
     public void fall(Map<Direction, Particle> neighbours){
         Particle neighbourParticle = neighbours.get(Direction.DOWN);
         
@@ -98,6 +105,36 @@ public class Particle {
         }
     }
 
+    public void grow(Map<Direction, Particle> neighbours) {
+        int randInt = StdRandom.uniformInt(20);
+
+        Particle leftNeighbourParticle = neighbours.get(Direction.LEFT);
+        Particle rightNeighbourParticle = neighbours.get(Direction.RIGHT);
+        Particle upwardNeighourbParticle = neighbours.get(Direction.UP);
+
+        if (randInt == 0) {
+            if (upwardNeighourbParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+                this.growInto(upwardNeighourbParticle);
+            }
+        }
+
+        else if (randInt == 1) {
+            if (rightNeighbourParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+                this.growInto(rightNeighbourParticle);    
+            }
+        }
+
+        else if (randInt == 2) {
+            if (leftNeighbourParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+                this.growInto(leftNeighbourParticle);
+            }
+        }
+
+        else if (randInt > 2 && randInt < 10){
+            return;
+        }
+    }
+
     public void action(Map<Direction, Particle> neighbours) {
         if (this.flavor.equals(ParticleFlavor.EMPTY)) {
             return;
@@ -109,6 +146,10 @@ public class Particle {
 
         if (this.flavor.equals(ParticleFlavor.WATER)) {
             flow(neighbours);
+        }
+
+        if (this.flavor.equals(ParticleFlavor.PLANT) || this.flavor.equals(ParticleFlavor.FLOWER)) {
+            grow(neighbours);
         }
     }
 }

@@ -1,7 +1,11 @@
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -302,5 +306,103 @@ public class TestParticleSimulator {
             assertThat(result).isEqualTo(expectedState.trim());
         }
     }    
+
+        @Test
+    public void testGrow() {
+        String startState = """
+        ...
+        .p.
+        bbb
+        """.trim();
+
+
+        // The list of REQUIRED growth outcomes
+        List<String> expectedGrowthStates = new ArrayList<>();
+
+        expectedGrowthStates.add("""
+        ...
+        .p.
+        bbb
+        """.trim()); // no growth
+
+        expectedGrowthStates.add("""
+        ...
+        pp.
+        bbb
+        """.trim()); // Left
+
+        expectedGrowthStates.add("""
+        .p.
+        .p.
+        bbb
+        """.trim()); // Up
+
+        expectedGrowthStates.add("""
+        pp.
+        .p.
+        bbb
+        """.trim()); // Up + Left
+
+        expectedGrowthStates.add("""
+        ...
+        .pp
+        bbb
+        """.trim()); // Right
+
+        expectedGrowthStates.add("""
+        ..p
+        .pp
+        bbb
+        """.trim()); // Right + Up
+
+        expectedGrowthStates.add("""
+        .p.
+        .pp
+        bbb
+        """.trim()); // Up, Right (fall)
+
+        expectedGrowthStates.add("""
+        .pp
+        .pp
+        bbb
+        """.trim()); // Right, Up, Left
+
+
+
+        // --- ACT ---
+        Set<String> observedStates = new HashSet<>();
+
+        for (int i = 0; i < 10000; i++) {
+            ParticleSimulator sim = fromBoardString(startState);
+            sim.tick();
+            observedStates.add(sim.toString().trim());
+        }
+
+        // --- ASSERT 1: CHECK FOR MISSING STATES ---
+        for (String expected : expectedGrowthStates) {
+            assertWithMessage("""
+        Test Failed: A required growth state was never observed.
+        Missing State:
+        %s
+        """, expected)
+                    .that(observedStates)
+                    .contains(expected);
+        }
+
+        // --- ASSERT 2: CHECK FOR UNEXPECTED (INVALID) STATES ---
+
+        // Create a "White List" of all valid outcomes (Growth + No Change)
+        Set<String> validStates = new HashSet<>(expectedGrowthStates);
+
+        for (String observed : observedStates) {
+            assertWithMessage("""
+        Test Failed: An invalid/impossible state was generated.
+        Unexpected State:
+        %s
+        """, observed)
+                    .that(validStates)
+                    .contains(observed);
+        }
+    }
 
 }
