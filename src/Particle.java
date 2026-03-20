@@ -6,9 +6,9 @@ import java.awt.Color;
 
 public class Particle {
 
-    public static final int PLANT_LIFESPAN = 150;
-    public static final int FLOWER_LIFESPAN = 75;
-    public static final int FIRE_LIFESPAN = 10;
+    public static final int PLANT_LIFESPAN = 250;
+    public static final int FLOWER_LIFESPAN = 150;
+    public static final int FIRE_LIFESPAN = 50;
 
     public static final Map<ParticleFlavor, Integer> LIFESPANS = Map.of(ParticleFlavor.FLOWER, FLOWER_LIFESPAN,
             ParticleFlavor.PLANT, PLANT_LIFESPAN, ParticleFlavor.FIRE, FIRE_LIFESPAN);
@@ -141,6 +141,20 @@ public class Particle {
         else if (randInt > 2 && randInt < 10){
             return;
         }
+    }
+
+    public void burn(Map<Direction, Particle> neighbours) {
+        int randInt = StdRandom.uniformInt(10);
+
+        
+        if (randInt <= 4) {
+            for (Particle neighbourParticle : neighbours.values()) {
+                if (neighbourParticle.flavor.equals(ParticleFlavor.FLOWER) || neighbourParticle.flavor.equals(ParticleFlavor.PLANT)) {
+                    this.growInto(neighbourParticle);
+                }
+            }    
+        }
+
     }
 
     public void action(Map<Direction, Particle> neighbours) {
