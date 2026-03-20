@@ -1,4 +1,7 @@
 import java.util.Map;
+
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.awt.Color;
 
 public class Particle {
@@ -72,6 +75,29 @@ public class Particle {
         }
     }
 
+    public void flow(Map<Direction, Particle> neighbours) {
+        int randInt = StdRandom.uniformInt(3);
+
+        Particle leftNeighbourParticle = neighbours.get(Direction.LEFT);
+        Particle rightNeighbourParticle = neighbours.get(Direction.RIGHT);
+
+        if (randInt == 0) {
+            return;
+        }
+
+        else if (randInt == 1) {
+            if (rightNeighbourParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+                this.moveInto(rightNeighbourParticle);    
+            }
+        }
+
+        else if (randInt == 2) {
+            if (leftNeighbourParticle.flavor.equals(ParticleFlavor.EMPTY)) {
+                this.moveInto(leftNeighbourParticle);
+            }
+        }
+    }
+
     public void action(Map<Direction, Particle> neighbours) {
         if (this.flavor.equals(ParticleFlavor.EMPTY)) {
             return;
@@ -79,6 +105,10 @@ public class Particle {
 
         if (!this.flavor.equals(ParticleFlavor.BARRIER)) {
             fall(neighbours);
+        }
+
+        if (this.flavor.equals(ParticleFlavor.WATER)) {
+            flow(neighbours);
         }
     }
 }
